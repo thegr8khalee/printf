@@ -1,15 +1,19 @@
-Learning Objectives
-At the end of this project, you are expected to be able to explain to anyone, without the help of Google:
+Background Context
+Write your own printf function.
 
-General
-What are variadic functions
-How to use va_start, va_arg and va_end macros
-Why and how to use the const type qualifier
-Copyright - Plagiarism
-You are tasked to come up with solutions for the tasks below yourself to meet with the above learning objectives.
-You will not be able to meet the objectives of this or any following project by copying and pasting someone else’s work.
-You are not allowed to publish any content of this project.
-Any form of plagiarism is strictly forbidden and will result in removal from the program.
+
+
+^ In this picture, Kris, and Jul
+
+Resources
+Read or watch:
+
+Secrets of printf
+Group Projects concept page (Don’t forget to read this)
+Flowcharts concept page
+man or help:
+
+printf (3)
 Requirements
 General
 Allowed editors: vi, vim, emacs
@@ -19,160 +23,329 @@ A README.md file, at the root of the folder of the project is mandatory
 Your code should use the Betty style. It will be checked using betty-style.pl and betty-doc.pl
 You are not allowed to use global variables
 No more than 5 functions per file
-The only C standard library functions allowed are malloc, free and exit. Any use of functions like printf, puts, calloc, realloc etc… is forbidden
-You are allowed to use the following macros: va_start, va_arg and va_end
-You are allowed to use _putchar
-You don’t have to push _putchar.c, we will use our file. If you do it won’t be taken into account
 In the following examples, the main.c files are shown as examples. You can use them to test your functions, but you don’t have to push them to your repo (if you do we won’t take them into account). We will use our own main.c files at compilation. Our main.c files might be different from the one shown in the examples
-The prototypes of all your functions and the prototype of the function _putchar should be included in your header file called variadic_functions.h
+The prototypes of all your functions should be included in your header file called main.h
 Don’t forget to push your header file
 All your header files should be include guarded
-Tasks
-0. Beauty is variable, ugliness is constant
-mandatory
-Score: 100.0% (Checks completed: 100.0%)
-Write a function that returns the sum of all its parameters.
+Note that we will not provide the _putchar function for this project
+GitHub
+There should be one project repository per group. The other members do not fork the project to ensure only one of the team has the repository in their github account otherwise you risk scoring 0%
 
-Prototype: int sum_them_all(const unsigned int n, ...);
-If n == 0, return 0
-julien@ubuntu:~/0x0f. variadic functions$ cat 0-main.c
+More Info
+Authorized functions and macros
+write (man 2 write)
+malloc (man 3 malloc)
+free (man 3 free)
+va_start (man 3 va_start)
+va_end (man 3 va_end)
+va_copy (man 3 va_copy)
+va_arg (man 3 va_arg)
+Compilation
+Your code will be compiled this way:
+$ gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c
+As a consequence, be careful not to push any c file containing a main function in the root directory of your project (you could have a test folder containing all your tests files including main functions)
+Our main files will include your main header file (main.h): #include main.h
+You might want to look at the gcc flag -Wno-format when testing with your _printf and the standard printf. Example of test file that you could use:
+alex@ubuntu:~/c/printf$ cat main.c 
+#include <limits.h>
 #include <stdio.h>
-#include "variadic_functions.h"
+#include "main.h"
 
 /**
- * main - check the code
+ * main - Entry point
  *
- * Return: Always 0.
+ * Return: Always 0
  */
 int main(void)
 {
-    int sum;
+    int len;
+    int len2;
+    unsigned int ui;
+    void *addr;
 
-    sum = sum_them_all(2, 98, 1024);
-    printf("%d\n", sum);
-    sum = sum_them_all(4, 98, 1024, 402, -1024);
-    printf("%d\n", sum);    
+    len = _printf("Let's try to printf a simple sentence.\n");
+    len2 = printf("Let's try to printf a simple sentence.\n");
+    ui = (unsigned int)INT_MAX + 1024;
+    addr = (void *)0x7ffe637541f0;
+    _printf("Length:[%d, %i]\n", len, len);
+    printf("Length:[%d, %i]\n", len2, len2);
+    _printf("Negative:[%d]\n", -762534);
+    printf("Negative:[%d]\n", -762534);
+    _printf("Unsigned:[%u]\n", ui);
+    printf("Unsigned:[%u]\n", ui);
+    _printf("Unsigned octal:[%o]\n", ui);
+    printf("Unsigned octal:[%o]\n", ui);
+    _printf("Unsigned hexadecimal:[%x, %X]\n", ui, ui);
+    printf("Unsigned hexadecimal:[%x, %X]\n", ui, ui);
+    _printf("Character:[%c]\n", 'H');
+    printf("Character:[%c]\n", 'H');
+    _printf("String:[%s]\n", "I am a string !");
+    printf("String:[%s]\n", "I am a string !");
+    _printf("Address:[%p]\n", addr);
+    printf("Address:[%p]\n", addr);
+    len = _printf("Percent:[%%]\n");
+    len2 = printf("Percent:[%%]\n");
+    _printf("Len:[%d]\n", len);
+    printf("Len:[%d]\n", len2);
+    _printf("Unknown:[%r]\n");
+    printf("Unknown:[%r]\n");
     return (0);
 }
-julien@ubuntu:~/0x0f. variadic functions$ gcc -Wall -pedantic -Werror -Wextra -std=gnu89 0-main.c 0-sum_them_all.c -o a
-julien@ubuntu:~/0x0f. variadic functions$ ./a 
-1122
-500
-julien@ubuntu:~/0x0f. variadic functions$ 
-Repo:
-
-GitHub repository: alx-low_level_programming
-Directory: 0x10-variadic_functions
-File: 0-sum_them_all.c
-  
-1. To be is to be the value of a variable
+alex@ubuntu:~/c/printf$ gcc -Wall -Wextra -Werror -pedantic -std=gnu89 -Wno-format *.c
+alex@ubuntu:~/c/printf$ ./printf
+Let's try to printf a simple sentence.
+Let's try to printf a simple sentence.
+Length:[39, 39]
+Length:[39, 39]
+Negative:[-762534]
+Negative:[-762534]
+Unsigned:[2147484671]
+Unsigned:[2147484671]
+Unsigned octal:[20000001777]
+Unsigned octal:[20000001777]
+Unsigned hexadecimal:[800003ff, 800003FF]
+Unsigned hexadecimal:[800003ff, 800003FF]
+Character:[H]
+Character:[H]
+String:[I am a string !]
+String:[I am a string !]
+Address:[0x7ffe637541f0]
+Address:[0x7ffe637541f0]
+Percent:[%]
+Percent:[%]
+Len:[12]
+Len:[12]
+Unknown:[%r]
+Unknown:[%r]
+alex@ubuntu:~/c/printf$
+We strongly encourage you to work all together on a set of tests
+If the task does not specify what to do with an edge case, do the same as printf
+Copyright - Plagiarism
+You are tasked to come up with solutions for the tasks below yourself to meet with the above learning objectives.
+You will not be able to meet the objectives of this or any following project by copying and pasting someone else’s work.
+You are not allowed to publish any content of this project.
+Any form of plagiarism is strictly forbidden and will result in removal from the program.
+Tasks
+0. I'm not going anywhere. You can print that wherever you want to. I'm here and I'm a Spur for life
 mandatory
-Score: 100.0% (Checks completed: 100.0%)
-Write a function that prints numbers, followed by a new line.
+Score: 0.0% (Checks completed: 0.0%)
+Write a function that produces output according to a format.
 
-Prototype: void print_numbers(const char *separator, const unsigned int n, ...);
-where separator is the string to be printed between numbers
-and n is the number of integers passed to the function
-You are allowed to use printf
-If separator is NULL, don’t print it
-Print a new line at the end of your function
-julien@ubuntu:~/0x0f. variadic functions$ cat 1-main.c
-#include "variadic_functions.h"
-
-/**
- * main - check the code
- *
- * Return: Always 0.
- */
-int main(void)
-{
-    print_numbers(", ", 4, 0, 98, -1024, 402);
-    return (0);
-}
-julien@ubuntu:~/0x0f. variadic functions$ gcc -Wall -pedantic -Werror -Wextra -std=gnu89 1-main.c 1-print_numbers.c -o b
-julien@ubuntu:~/0x0f. variadic functions$ ./b
-0, 98, -1024, 402
-julien@ubuntu:~/0x0f. variadic functions$ 
+Prototype: int _printf(const char *format, ...);
+Returns: the number of characters printed (excluding the null byte used to end output to strings)
+write output to stdout, the standard output stream
+format is a character string. The format string is composed of zero or more directives. See man 3 printf for more detail. You need to handle the following conversion specifiers:
+c
+s
+%
+You don’t have to reproduce the buffer handling of the C library printf function
+You don’t have to handle the flag characters
+You don’t have to handle field width
+You don’t have to handle precision
+You don’t have to handle the length modifiers
 Repo:
 
-GitHub repository: alx-low_level_programming
-Directory: 0x10-variadic_functions
-File: 1-print_numbers.c
-  
-2. One woman's constant is another woman's variable
+GitHub repository: printf
+   
+1. Education is when you read the fine print. Experience is what you get if you don't
 mandatory
-Score: 100.0% (Checks completed: 100.0%)
-Write a function that prints strings, followed by a new line.
+Score: 0.0% (Checks completed: 0.0%)
+Handle the following conversion specifiers:
 
-Prototype: void print_strings(const char *separator, const unsigned int n, ...);
-where separator is the string to be printed between the strings
-and n is the number of strings passed to the function
-You are allowed to use printf
-If separator is NULL, don’t print it
-If one of the string is NULL, print (nil) instead
-Print a new line at the end of your function
-julien@ubuntu:~/0x0f. Variadic functions$ cat 2-main.c
-#include "variadic_functions.h"
+d
+i
+You don’t have to handle the flag characters
+You don’t have to handle field width
+You don’t have to handle precision
+You don’t have to handle the length modifiers
+Repo:
+
+GitHub repository: printf
+   
+2. With a face like mine, I do better in print
+#advanced
+Score: 0.0% (Checks completed: 0.0%)
+Handle the following custom conversion specifiers:
+
+b: the unsigned int argument is converted to binary
+alex@ubuntu:~/c/printf$ cat main.c
+#include "main.h"
 
 /**
- * main - check the code
+ * main - Entry point
  *
- * Return: Always 0.
+ * Return: Always 0
  */
 int main(void)
 {
-    print_strings(", ", 2, "Jay", "Django");
+    _printf("%b\n", 98);
     return (0);
 }
-julien@ubuntu:~/0x0f. Variadic functions$ gcc -Wall -pedantic -Werror -Wextra -std=gnu89 2-main.c 2-print_strings.c -o c
-julien@ubuntu:~/0x0f. Variadic functions$ ./c 
-Jay, Django
-julien@ubuntu:~/0x0f. Variadic functions$ 
+alex@ubuntu:~/c/printf$ gcc -Wall -Wextra -Werror -pedantic -std=gnu89 main.c
+alex@ubuntu:~/c/printf$ ./a.out
+1100010
+alex@ubuntu:~/c/printf$
 Repo:
 
-GitHub repository: alx-low_level_programming
-Directory: 0x10-variadic_functions
-File: 2-print_strings.c
-  
-3. To be is a to be the value of a variable
-mandatory
-Score: 100.0% (Checks completed: 100.0%)
-Write a function that prints anything.
+GitHub repository: printf
+   
+3. What one has not experienced, one will never understand in print
+#advanced
+Score: 0.0% (Checks completed: 0.0%)
+Handle the following conversion specifiers:
 
-Prototype: void print_all(const char * const format, ...);
-where format is a list of types of arguments passed to the function
-c: char
-i: integer
-f: float
-s: char * (if the string is NULL, print (nil) instead
-any other char should be ignored
-see example
-You are not allowed to use for, goto, ternary operator, else, do ... while
-You can use a maximum of
-2 while loops
-2 if
-You can declare a maximum of 9 variables
-You are allowed to use printf
-Print a new line at the end of your function
-julien@ubuntu:~/0x0f. Variadic functions$ cat 3-main.c
-#include "variadic_functions.h"
+u
+o
+x
+X
+You don’t have to handle the flag characters
+You don’t have to handle field width
+You don’t have to handle precision
+You don’t have to handle the length modifiers
+Repo:
+
+GitHub repository: printf
+   
+4. Nothing in fine print is ever good news
+#advanced
+Score: 0.0% (Checks completed: 0.0%)
+Use a local buffer of 1024 chars in order to call write as little as possible.
+
+Repo:
+
+GitHub repository: printf
+   
+5. My weakness is wearing too much leopard print
+#advanced
+Score: 0.0% (Checks completed: 0.0%)
+Handle the following custom conversion specifier:
+
+S : prints the string.
+Non printable characters (0 < ASCII value < 32 or >= 127) are printed this way: \x, followed by the ASCII code value in hexadecimal (upper case - always 2 characters)
+alex@ubuntu:~/c/printf$ cat main.c
+#include "main.h"
 
 /**
- * main - check the code
+ * main - Entry point
  *
- * Return: Always 0.
+ * Return: Always 0
  */
 int main(void)
 {
-    print_all("ceis", 'B', 3, "stSchool");
+    _printf("%S\n", "Best\nSchool");
     return (0);
 }
-julien@ubuntu:~/0x0f. Variadic functions$ gcc -Wall -pedantic -Werror -Wextra -std=gnu89 3-main.c 3-print_all.c -o d
-julien@ubuntu:~/0x0f. Variadic functions$ ./d 
-B, 3, stSchool
-julien@ubuntu:~/0x0f. Variadic functions$ 
+alex@ubuntu:~/c/printf$ gcc -Wall -Wextra -Werror -pedantic -std=gnu89 main.c
+alex@ubuntu:~/c/printf$ ./a.out
+Best\x0ASchool
+alex@ubuntu:~/c/printf$
 Repo:
 
-GitHub repository: alx-low_level_programming
-Directory: 0x10-variadic_functions
-File: 3-print_all.c
+GitHub repository: printf
+   
+6. How is the world ruled and led to war? Diplomats lie to journalists and believe these lies when they see them in print
+#advanced
+Score: 0.0% (Checks completed: 0.0%)
+Handle the following conversion specifier: p.
+
+You don’t have to handle the flag characters
+You don’t have to handle field width
+You don’t have to handle precision
+You don’t have to handle the length modifiers
+Repo:
+
+GitHub repository: printf
+   
+7. The big print gives and the small print takes away
+#advanced
+Score: 0.0% (Checks completed: 0.0%)
+Handle the following flag characters for non-custom conversion specifiers:
+
++
+space
+#
+Repo:
+
+GitHub repository: printf
+   
+8. Sarcasm is lost in print
+#advanced
+Score: 0.0% (Checks completed: 0.0%)
+Handle the following length modifiers for non-custom conversion specifiers:
+
+l
+h
+Conversion specifiers to handle: d, i, u, o, x, X
+
+Repo:
+
+GitHub repository: printf
+   
+9. Print some money and give it to us for the rain forests
+#advanced
+Score: 0.0% (Checks completed: 0.0%)
+Handle the field width for non-custom conversion specifiers.
+
+Repo:
+
+GitHub repository: printf
+   
+10. The negative is the equivalent of the composer's score, and the print the performance
+#advanced
+Score: 0.0% (Checks completed: 0.0%)
+Handle the precision for non-custom conversion specifiers.
+
+Repo:
+
+GitHub repository: printf
+   
+11. It's depressing when you're still around and your albums are out of print
+#advanced
+Score: 0.0% (Checks completed: 0.0%)
+Handle the 0 flag character for non-custom conversion specifiers.
+
+Repo:
+
+GitHub repository: printf
+   
+12. Every time that I wanted to give up, if I saw an interesting textile, print what ever, suddenly I would see a collection
+#advanced
+Score: 0.0% (Checks completed: 0.0%)
+Handle the - flag character for non-custom conversion specifiers.
+
+Repo:
+
+GitHub repository: printf
+   
+13. Print is the sharpest and the strongest weapon of our party
+#advanced
+Score: 0.0% (Checks completed: 0.0%)
+Handle the following custom conversion specifier:
+
+r : prints the reversed string
+Repo:
+
+GitHub repository: printf
+   
+14. The flood of print has turned reading into a process of gulping rather than savoring
+#advanced
+Score: 0.0% (Checks completed: 0.0%)
+Handle the following custom conversion specifier:
+
+R: prints the rot13'ed string
+Repo:
+
+GitHub repository: printf
+   
+15. *
+#advanced
+Score: 0.0% (Checks completed: 0.0%)
+All the above options work well together.
+
+Well done on completing this project! Let the world hear about this milestone achieved.
+
+Click here to tweet!
+
+Repo:
+
+GitHub repository: printf
